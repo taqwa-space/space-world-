@@ -1,0 +1,475 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>اكتشاف الفضاء الخارجي</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: radial-gradient(ellipse at center, #171044, #08051c 65%, #02010b);
+  color: white;
+  font-family: Tahoma, Arial, sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.stars {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.star {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  animation: twinkle 2s infinite alternate;
+}
+
+@keyframes twinkle {
+  from { opacity: .2; transform: scale(.7); }
+  to { opacity: 1; transform: scale(1.5); }
+}
+
+header {
+  text-align: center;
+  padding: 25px 10px;
+  position: relative;
+  z-index: 5;
+}
+
+header h1 {
+  font-size: 36px;
+  color: #e0b5ff;
+  text-shadow: 0 0 15px #a855f7, 0 0 30px #8b5cf6;
+}
+
+header p {
+  margin-top: 12px;
+  color: #c9c1ee;
+}
+
+.music-btn {
+  margin-top: 18px;
+  padding: 12px 25px;
+  border: 1px solid #c084fc;
+  border-radius: 30px;
+  background: #372064;
+  color: white;
+  cursor: pointer;
+  font-size: 15px;
+  box-shadow: 0 0 15px #9333ea;
+  transition: .3s;
+}
+
+.music-btn:hover {
+  background: #7138a8;
+  transform: scale(1.05);
+}
+
+.space {
+  height: 650px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.solar {
+  width: 600px;
+  height: 600px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.sun {
+  position: absolute;
+  width: 85px;
+  height: 85px;
+  background: radial-gradient(circle, #fff7ae, #ffb000, #ff6500);
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 30px #ffb000, 0 0 75px #ff7900, 0 0 120px #ff4500;
+  z-index: 3;
+  animation: sunGlow 3s infinite alternate;
+}
+
+@keyframes sunGlow {
+  from { box-shadow: 0 0 25px #ffb000, 0 0 55px #ff7900; }
+  to { box-shadow: 0 0 50px #fff000, 0 0 110px #ff7900; }
+}
+
+.orbit {
+  position: absolute;
+  border: 1px solid rgba(190, 160, 255, .25);
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: orbit linear infinite;
+}
+
+@keyframes orbit {
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+.planet {
+  position: absolute;
+  border-radius: 50%;
+  top: -9px;
+  left: 50%;
+  transform: translateX(-50%);
+  cursor: pointer;
+  border: none;
+  transition: .3s;
+  box-shadow: 0 0 15px currentColor;
+}
+
+.planet:hover {
+  filter: brightness(1.5);
+  scale: 1.4;
+}
+
+.mercury-orbit { width:125px; height:125px; animation-duration:5s; }
+.venus-orbit { width:185px; height:185px; animation-duration:8s; }
+.earth-orbit { width:255px; height:255px; animation-duration:11s; }
+.mars-orbit { width:325px; height:325px; animation-duration:15s; }
+.jupiter-orbit { width:405px; height:405px; animation-duration:20s; }
+.saturn-orbit { width:485px; height:485px; animation-duration:25s; }
+.uranus-orbit { width:555px; height:555px; animation-duration:30s; }
+.neptune-orbit { width:600px; height:600px; animation-duration:35s; }
+
+.mercury { width:12px; height:12px; background:#aaa; color:#aaa; }
+.venus { width:19px; height:19px; background:#e5ae69; color:#e5ae69; }
+.earth { width:23px; height:23px; background:#168cff; color:#168cff; }
+.mars { width:17px; height:17px; background:#e45b35; color:#e45b35; }
+.jupiter { width:38px; height:38px; background:#d5a477; color:#d5a477; }
+.saturn { width:32px; height:32px; background:#e5c78c; color:#e5c78c; }
+
+.saturn::after {
+  content:"";
+  position:absolute;
+  width:55px;
+  height:13px;
+  border:3px solid #e8d1a0;
+  border-radius:50%;
+  top:8px;
+  left:-13px;
+  transform:rotate(-25deg);
+}
+
+.uranus { width:25px; height:25px; background:#72dce5; color:#72dce5; }
+.neptune { width:24px; height:24px; background:#3656df; color:#3656df; }
+
+.info {
+  position: relative;
+  z-index: 5;
+  width: min(90%, 450px);
+  margin: 0 auto 35px;
+  padding: 25px;
+  text-align: center;
+  background: rgba(37, 23, 75, .85);
+  border: 1px solid #a78bfa;
+  border-radius: 20px;
+  box-shadow: 0 0 25px #7544c8;
+  min-height: 150px;
+}
+
+.info h2 {
+  color: #e0b5ff;
+  margin-bottom: 12px;
+}
+
+.info p {
+  line-height: 2;
+  color: #e2dcff;
+}
+
+.hint {
+  text-align: center;
+  color: #c4b5fd;
+  padding: 5px 10px 25px;
+  position: relative;
+  z-index: 5;
+}
+
+footer {
+  position: relative;
+  z-index: 5;
+  text-align: center;
+  padding: 35px 15px;
+  color: #c4b5fd;
+  border-top: 1px solid #51357d;
+  background: rgba(15, 8, 38, .7);
+  line-height: 2;
+}
+
+footer strong {
+  color: #e0b5ff;
+  font-size: 25px;
+  text-shadow: 0 0 15px #c084fc;
+}
+
+@media(max-width:650px) {
+  .space {
+    height: 470px;
+  }
+
+  .solar {
+    transform: scale(.68);
+  }
+
+  header h1 {
+    font-size: 27px;
+  }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="stars" id="stars"></div>
+
+<header>
+  <h1>🌌 اكتشاف الفضاء الخارجي 🌌</h1>
+  <p>رحلة ساحرة لاكتشاف أسرار الكون والكواكب</p>
+
+  <button class="music-btn" id="musicBtn" onclick="toggleMusic()">
+    🎵 تشغيل الموسيقى
+  </button>
+</header>
+
+<div class="space">
+
+  <div class="solar">
+
+    <div class="sun" title="الشمس"></div>
+
+    <div class="orbit mercury-orbit">
+      <button class="planet mercury" onclick="showInfo('عطارد')"></button>
+    </div>
+
+    <div class="orbit venus-orbit">
+      <button class="planet venus" onclick="showInfo('الزهرة')"></button>
+    </div>
+
+    <div class="orbit earth-orbit">
+      <button class="planet earth" onclick="showInfo('الأرض')"></button>
+    </div>
+
+    <div class="orbit mars-orbit">
+      <button class="planet mars" onclick="showInfo('المريخ')"></button>
+    </div>
+
+    <div class="orbit jupiter-orbit">
+      <button class="planet jupiter" onclick="showInfo('المشتري')"></button>
+    </div>
+
+    <div class="orbit saturn-orbit">
+      <button class="planet saturn" onclick="showInfo('زحل')"></button>
+    </div>
+
+    <div class="orbit uranus-orbit">
+      <button class="planet uranus" onclick="showInfo('أورانوس')"></button>
+    </div>
+
+    <div class="orbit neptune-orbit">
+      <button class="planet neptune" onclick="showInfo('نبتون')"></button>
+    </div>
+
+  </div>
+</div>
+
+<p class="hint">
+  ✨ اضغطي على أي كوكب لاكتشاف أسراره ✨
+</p>
+
+<div class="info" id="info">
+  <h2>أهلاً بك في عالم الفضاء 💜</h2>
+  <p>اختاري كوكباً من الكواكب لتتعرفي على معلومات مذهلة عنه!</p>
+</div>
+
+<footer>
+  تم صناعة هذه البرمجية بواسطة
+  <br>
+  <strong>Taqwa! 💜</strong>
+  <br>
+  رحلة ممتعة بين النجوم والكواكب ✨
+</footer>
+
+<script>
+
+// إنشاء النجوم اللامعة
+const stars = document.getElementById("stars");
+
+for(let i=0; i<180; i++) {
+  const star = document.createElement("div");
+  star.className = "star";
+
+  const size = Math.random()*3+1;
+
+  star.style.width = size+"px";
+  star.style.height = size+"px";
+  star.style.left = Math.random()*100+"%";
+  star.style.top = Math.random()*100+"%";
+  star.style.animationDuration = (Math.random()*3+1)+"s";
+
+  stars.appendChild(star);
+}
+
+// معلومات الكواكب
+const planets = {
+
+  "عطارد": {
+    emoji:"☿️",
+    description:"أقرب كوكب إلى الشمس، وهو أصغر كواكب المجموعة الشمسية. يتميز بسطحه المليء بالفوهات."
+  },
+
+  "الزهرة": {
+    emoji:"🌕",
+    description:"ثاني كوكب من الشمس، ويُعد أكثر كواكب المجموعة الشمسية حرارة بسبب غلافه الجوي الكثيف."
+  },
+
+  "الأرض": {
+    emoji:"🌍",
+    description:"كوكبنا الجميل! الكوكب الوحيد المعروف بوجود حياة عليه، ويتميز بوجود الماء."
+  },
+
+  "المريخ": {
+    emoji:"🔴",
+    description:"يُعرف بالكوكب الأحمر بسبب لون تربته، ويهتم العلماء بدراسته لمعرفة المزيد عن إمكانية وجود حياة قديمة عليه."
+  },
+
+  "المشتري": {
+    emoji:"🪐",
+    description:"أكبر كواكب المجموعة الشمسية، ويتميز بالعاصفة الحمراء العظيمة التي تستمر منذ زمن طويل."
+  },
+
+  "زحل": {
+    emoji:"🪐",
+    description:"يشتهر بحلقاته الجميلة المكونة من الجليد والصخور والغبار، وهو ثاني أكبر كواكب المجموعة الشمسية."
+  },
+
+  "أورانوس": {
+    emoji:"🔵",
+    description:"كوكب عملاق جليدي يتميز بلونه الأزرق المخضر، ويدور حول الشمس بطريقة مائلة بشكل كبير."
+  },
+
+  "نبتون": {
+    emoji:"🔵",
+    description:"أبعد كواكب المجموعة الشمسية عن الشمس، ويتميز بلونه الأزرق ورياحه القوية جداً."
+  }
+
+};
+
+// عرض معلومات الكوكب
+function showInfo(name) {
+
+  const planet = planets[name];
+
+  document.getElementById("info").innerHTML = `
+    <h2>${planet.emoji} ${name}</h2>
+    <p>${planet.description}</p>
+  `;
+
+  // صوت نقرة بسيط
+  playClick();
+}
+
+// أصوات باستخدام المتصفح
+let audioContext;
+
+function playClick() {
+  try {
+    audioContext = audioContext || new (window.AudioContext || window.webkitAudioContext)();
+
+    const oscillator = audioContext.createOscillator();
+    const gain = audioContext.createGain();
+
+    oscillator.connect(gain);
+    gain.connect(audioContext.destination);
+
+    oscillator.frequency.value = 650;
+    gain.gain.setValueAtTime(0.12, audioContext.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.15);
+
+    oscillator.start();
+    oscillator.stop(audioContext.currentTime + 0.15);
+  } catch(e) {}
+}
+
+// موسيقى فضائية إلكترونية هادئة
+let musicPlaying = false;
+let musicTimer;
+let musicNotes = [];
+let musicIndex = 0;
+
+function playMusicNote() {
+
+  if(!audioContext || !musicPlaying) return;
+
+  const notes = [130.81, 164.81, 196, 220, 164.81, 146.83];
+  const osc = audioContext.createOscillator();
+  const gain = audioContext.createGain();
+
+  osc.type = "sine";
+  osc.frequency.value = notes[musicIndex % notes.length];
+
+  gain.gain.setValueAtTime(0.0001, audioContext.currentTime);
+  gain.gain.linearRampToValueAtTime(0.035, audioContext.currentTime + 0.5);
+  gain.gain.linearRampToValueAtTime(0.0001, audioContext.currentTime + 1.8);
+
+  osc.connect(gain);
+  gain.connect(audioContext.destination);
+
+  osc.start();
+  osc.stop(audioContext.currentTime + 1.8);
+
+  musicIndex++;
+}
+
+async function toggleMusic() {
+
+  audioContext = audioContext || new (window.AudioContext || window.webkitAudioContext)();
+
+  if(audioContext.state === "suspended") {
+    await audioContext.resume();
+  }
+
+  const btn = document.getElementById("musicBtn");
+
+  if(!musicPlaying) {
+
+    musicPlaying = true;
+    btn.innerHTML = "🔇 إيقاف الموسيقى";
+
+    playMusicNote();
+    musicTimer = setInterval(playMusicNote, 1500);
+
+  } else {
+
+    musicPlaying = false;
+    clearInterval(musicTimer);
+    btn.innerHTML = "🎵 تشغيل الموسيقى";
+
+  }
+}
+
+</script>
+
+</body>
+</html>
